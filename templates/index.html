@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>فروشگاه اینترنتی من</title>
+</head>
+<body>
+
+    <h1>فروشگاه اینترنتی من</h1>
+
+    {% if session.get('admin') %}
+
+        <h2>پنل مدیریت</h2>
+
+        <form action="/add" method="POST">
+            <input name="name" placeholder="نام محصول" required>
+            <input name="price" type="number" placeholder="قیمت" required>
+            <input name="category" placeholder="دسته بندی" required>
+            <button type="submit">ثبت محصول</button>
+        </form>
+
+        <a href="/logout">خروج</a>
+
+    {% else %}
+
+        <a href="/login">ورود مدیر</a>
+
+    {% endif %}
+
+    <hr>
+
+    <h2>محصولات</h2>
+
+    {% for p in products %}
+
+        <h3>{{ p.name }}</h3>
+        <p>قیمت: {{ p.price }} تومان</p>
+        <p>دسته بندی: {{ p.category }}</p>
+
+        {% if session.get('admin') %}
+            <form action="/delete/{{ p.id }}" method="POST">
+                <button type="submit">حذف محصول</button>
+            </form>
+        {% endif %}
+
+        <hr>
+
+    {% endfor %}
+
+</body>
+</html>
